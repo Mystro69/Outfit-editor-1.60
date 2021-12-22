@@ -12,11 +12,6 @@ namespace big
 		explicit settings() = default;
 		~settings() = default;
 
-		const char config[] = "url=http://example.com\n"
-			"file=main.exe\n"
-			"true=0";
-
-
 		nlohmann::json options;
 		nlohmann::json default_options =
 			R"({
