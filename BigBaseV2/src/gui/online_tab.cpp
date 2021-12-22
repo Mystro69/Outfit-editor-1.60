@@ -932,8 +932,9 @@ namespace big
 			ImGui::InputText("##File Path", str0, IM_ARRAYSIZE(str0));
 			ImGui::PopItemWidth();
 
-			if (ImGui::Button("Import From File"))
+			if (ImGui::Button("Import From File (Will Be Added $ASAP)"))
 			{
+				/*
 				std::string text[1];
 				std::ifstream infile(str0);
 				std::string line;
@@ -972,12 +973,14 @@ namespace big
 					}
 
 				}
+				*/
 			}
 
 			ImGui::SameLine();
 
-			if (ImGui::Button("Export To File"))
+			if (ImGui::Button("Export To File (Will Be Added $ASAP)"))
 			{
+				/*
 				std::ofstream myfile(str0);
 				for (int i = 0; i <= 11; i++)
 				{
@@ -992,6 +995,7 @@ namespace big
 					}
 				}
 				myfile.close();
+				*/
 			}
 
 			ImGui::EndTabItem();
