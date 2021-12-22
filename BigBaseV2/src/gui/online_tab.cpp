@@ -1,0 +1,1012 @@
+#include "common.hpp"
+#include "imgui.h"
+#include "script.hpp"
+#include "fiber_pool.hpp"
+#include "natives.hpp"
+#include "gta_util.hpp"
+#include "features.hpp"
+#include "gui.hpp"
+#include "script_local.hpp"
+#include "online_tab.h"
+#include "script_global.hpp"
+#include "gta/VehicleValues.h"
+#include "misc/cpp/imgui_stdlib.h"
+#include "local_player.hpp"
+#include "imgui.cpp"
+#include "common.hpp"
+#include "gta/player.hpp"
+#include <fstream>
+#include <iostream>
+
+using namespace big;
+
+namespace big
+{
+
+	void online_tab::render()
+	{
+		if (ImGui::BeginTabItem("Components"))
+		{
+
+			ImGui::Text("Face");
+			static int FaceValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##bvalue", &FaceValue);
+			ImGui::PopItemWidth();
+			static int FaceText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
+			ImGui::SameLine();
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##avalue", &FaceText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Mask");
+			static int MaskValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##cvalue", &MaskValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int MaskText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##dvalue", &MaskText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Hair");
+			static int HairValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##evalue", &HairValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int HairText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##fvalue", &HairText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Torso");
+			static int TorsoValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##gvalue", &TorsoValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int TorsoText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##hvalue", &TorsoText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Leg");
+			static int LegValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##ivalue", &LegValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int LegText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##1value", &LegText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Parachute / Bag");
+			static int BagValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##2value", &BagValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int BagText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##3value", &BagText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Shoes");
+			static int ShoesValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##232value", &ShoesValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int ShoesText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##354value", &ShoesText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Accessory");
+			static int AccessoryValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##4value", &AccessoryValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int AccessoryText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##5value", &AccessoryText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Undershirt");
+			static int UndershirtValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 8);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##6value", &UndershirtValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int UndershirtText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 8);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##7value", &UndershirtText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Armor");
+			static int ArmorValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##8value", &ArmorValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int ArmorText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##9value", &ArmorText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Decals");
+			static int DecalsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 10);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##10value", &DecalsValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int DecalsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 10);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##11value", &DecalsText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Tops");
+			static int TopsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##12value", &TopsValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int TopsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##13value", &TopsText);
+			ImGui::PopItemWidth();
+
+			if (ImGui::Button("Apply"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 0, FaceValue, FaceText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, MaskValue, MaskText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 2, HairValue, HairText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, TorsoValue, TorsoText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, LegValue, LegText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, BagValue, BagText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, ShoesValue, ShoesText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, AccessoryValue, AccessoryText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, UndershirtValue, UndershirtText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, ArmorValue, ArmorText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, DecalsValue, DecalsText, 2);
+					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, TopsValue, TopsText, 2);
+				} QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Update"))
+			{
+				FaceValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
+				FaceText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
+				MaskValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
+				MaskText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
+				HairValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
+				HairText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
+				TorsoValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+				TorsoText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+				LegValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
+				LegText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
+				BagValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+				BagText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+				ShoesValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+				ShoesText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+				AccessoryValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+				AccessoryText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+				UndershirtValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 8);
+				UndershirtText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 8);
+				ArmorValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+				ArmorText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+				DecalsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 10);
+				DecalsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 10);
+				TopsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+				TopsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+			}
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Props"))
+		{
+
+			ImGui::Text("Hat");
+			static int HatValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##23value", &HatValue);
+			ImGui::PopItemWidth();
+			static int HatText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 0);
+			ImGui::SameLine();
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##24value", &HatText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Glass");
+			static int GlassValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##25value", &GlassValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int GlassText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 1);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##26value", &GlassText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Ear");
+			static int EarValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##27value", &EarValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int EarText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 2);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##28value", &EarText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Watch");
+			static int WatchValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##29value", &WatchValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int WatchText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##30value", &WatchText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Bracelet");
+			static int BraceletValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##31value", &BraceletValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int BraceletText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##32value", &BraceletText);
+			ImGui::PopItemWidth();
+
+			if (ImGui::Button("Apply"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, HatValue, HatText, 2);
+					PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, GlassValue, GlassText, 2);
+					PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, EarValue, EarText, 2);
+					PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, WatchValue, WatchText, 2);
+					PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, BraceletText, BraceletText, 2);
+				} QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Update"))
+			{
+				static int HatValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0);
+				static int HatText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 0);
+				static int GlassValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1);
+				static int GlassText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 1);
+				static int EarValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2);
+				static int EarText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 2);
+				static int WatchValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6);
+				static int WatchText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 6);
+				static int BraceletValue = PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7);
+				static int BraceletText = PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), 7);
+			}
+			ImGui::EndTabItem();
+		}
+
+
+		if (ImGui::BeginTabItem("Saved Outfits"))
+		{
+			if (ImGui::CollapsingHeader("Saved FeMale Outfits"))
+			{
+				if (ImGui::Button("Medic"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 121, 1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 109, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 99, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 52, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 97, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 159, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 66, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 258, 1, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Naked - Blue"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 5, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 5, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 32, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 49, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 88, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 159, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 260, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("White"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 8, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 27, 4, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 52, 2, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 88, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 1, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 15, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 21, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 3, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Neon Purple - Yellow"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 2, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 5, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 128, 14, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, 2, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 81, 24, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 95, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 189, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 79, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 180, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Invisible CheckerBoard"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 3, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 5, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 8, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 6, 4, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 4, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 190, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 260, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Fully Invisible"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 8, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 13, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, -8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 12, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 2, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 260, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("SWAT"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 140, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 52, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 4, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 131, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 63, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 2, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 79, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 331, 0, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Black"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 9, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 12, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 127, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, 9, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 58, 10, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 94, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 81, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 10, 2, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 180, 10, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Red"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 4, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 12, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 127, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 79, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 67, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 85, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 81, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 18, 2, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 7, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 205, 12, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Tan"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 7, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 5, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 127, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 61, 7, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 58, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 94, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 81, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 18, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 10, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 206, 8, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("B/w"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 8, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 5, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 36, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 52, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 14, 2, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 49, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 102, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 159, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 54, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 10, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 120, 11, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+			}
+
+			if (ImGui::CollapsingHeader("Saved Male Outfits"))
+			{
+				if (ImGui::Button("CheckerBoard - White"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 3, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 25, 4, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 52, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 176, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 91, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 22, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 0, 6, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("White - Red"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 4, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 26, 0, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 142, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 5, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 133, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 26, 8, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 3, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 5, 2);
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Black"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 9, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 9, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 9, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 124, 1, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 22, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 2, 2); //armor
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 3, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 8, 2); //tops
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("White"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 8, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 8, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 22, 4, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 8, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 9, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 128, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 8, 2, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 2, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Green"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 39, 4, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 49, 4, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 153, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 31, 4, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 7, 1, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 125, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 44, 0, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 12, 6, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 89, 4, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 1, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Red"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 4, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 5, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 155, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 4, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 5, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 133, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 1, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 12, 5, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 26, 4, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Blue"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 5, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 3, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 5, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 6, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 40, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 7, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 12, 6, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 166, 2, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 26, 5, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("White - Trash"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 8, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 23, 1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 316, 5, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 59, 1, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 8, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 9, 11, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 125, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 82, 16, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 9, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 71, 0, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 52, 2, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 21, 8, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("FireMan"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 138, 0, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 25, 1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 67, 2, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 61, 2, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 9, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 0, 0, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 112, 2, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 5, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 1, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 166, 1, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 18, 9, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Alien"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 57, 0, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 286, 0, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 0, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 33, 0, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 41, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 111, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 3, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 92, 0, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Gork"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 6, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 251, 11, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 97, 11, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 7, 0, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 124, 1, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 3, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 2, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Yellow"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 1, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 203, 0, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 1, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 2, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 124, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 53, 1, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 9, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 2, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 2, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Pink"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 63, 3, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, -1, -1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 178, 4, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 129, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 3, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 4, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 112, 2, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 11, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 2, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 101, 9, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 26, 3, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("idk"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 9, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 0, 0, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 203, 2, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 78, 3, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 9, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 10, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 124, 1, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 12, 1, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 36, 0, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 16, 2, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Army"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 7, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 1, 0, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 248, 20, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 153, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 97, 20, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 85, 3, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 41, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 143, 4, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 1, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 114, 18, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Trash - Fire"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 138, 1, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 25, 6, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 128, 1, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 59, 1, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 1, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 46, 7, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 125, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 81, 5, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 9, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 1, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 166, 3, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 18, 1, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Tryhard - Army"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 39, 3, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 1, 0, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 73, 11, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 22, 3, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 31, 3, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 8, 0, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 22, 3, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 41, 0, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 11, 0, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 166, 0, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 0, 0, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+				if (ImGui::Button("Anime"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 0, 59, 3, 2); //Hats
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 1, 24, 1, 2); //Glasses
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 2, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 6, -1, -1, 2);
+						PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), 7, -1, -1, 2);
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 11, 262, 14, 2); //tops
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 8, 122, 0, 2); //undershirt
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, 59, 3, 2); //Leg
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 6, 55, 8, 2); //feet
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 7, 128, 0, 2); //accessory
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, 0, 0, 2); //bag
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, 110, 3, 2); //Glove
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 10, 0, 0, 2); //decvals
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, 44, 0, 2); //Mask
+						PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 9, 17, 3, 2); //armor
+					} QUEUE_JOB_END_CLAUSE
+				}
+			}
+
+			ImGui::Text("File Name");
+			static char str0[128] = "Exported Outfit.txt";
+			ImGui::PushItemWidth(300);
+			ImGui::InputText("##File Path", str0, IM_ARRAYSIZE(str0));
+			ImGui::PopItemWidth();
+
+			if (ImGui::Button("Import From File"))
+			{
+				std::string text[1];
+				std::ifstream infile(str0);
+				std::string line;
+				int a = 0;
+				int b = 0;
+				bool prop = 0;
+				int old = 0;
+				for (int i = 0; i < 36; i++)
+				{
+					std::getline(infile, line);
+					if (a >= 11) {
+						if (prop) {
+							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b, old, stoi(line), 2);
+							prop = 0;
+							old = 0;
+							b++;
+						}
+						else {
+							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b, stoi(line), 0, 2);
+							old = stoi(line);
+							prop = 1;
+						}
+					}
+					else {
+						if (prop) {
+							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), a, old, stoi(line), 2);
+							prop = 0;
+							old = 0;
+							a++;
+						}
+						else {
+							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), a, stoi(line), 0, 2);
+							old = stoi(line);
+							prop = 1;
+						}
+					}
+
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Export To File"))
+			{
+				std::ofstream myfile(str0);
+				for (int i = 0; i <= 11; i++)
+				{
+					myfile << PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), i) << "\n";
+					myfile << PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), i) << "\n";
+					if (i >= 11) {
+						for (int i = 0; i <= 7; i++)
+						{
+							myfile << PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), i) << "\n";
+							myfile << PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), i) << "\n";
+						}
+					}
+				}
+				myfile.close();
+			}
+
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Credits"))
+		{
+			ImGui::Text("Credits :");
+			ImGui::Text("Mystro (Dev)\npocakking (bigbasev2)\n1337Nexo (base)");
+			ImGui::Separator();
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Unload"))
+		{
+			g_running = false;
+		}
+	}
+}
