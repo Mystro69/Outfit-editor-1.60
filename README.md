@@ -1,8 +1,5 @@
 # GTAV-Online-outfit-editor-internal-1.5.8
 [Uc Topic](https://www.unknowncheats.me/forum/grand-theft-auto-v/465334-outfit-editor-1-57-internal.html)
-https://cdn.discordapp.com/attachmen...reenshot_1.png
-https://cdn.discordapp.com/attachmen...reenshot_2.png
-https://cdn.discordapp.com/attachmen...reenshot_3.png
 
 # Create vector folder and download these resources
 [FMT]https://github.com/fmtlib/fmt
