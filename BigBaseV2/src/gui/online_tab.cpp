@@ -926,76 +926,77 @@ namespace big
 				}
 			}
 
-			ImGui::Text("File Name");
-			static char str0[128] = "Exported Outfit.txt";
+			ImGui::Text("Import Data");
+			static char Input2[128] = "0&0&0&0&53&0&109&0&99&1&0&0&52&0&97&0&159&0&0&0&66&1&258&1&121&1&12&0&-1&-1&-1&-1&-1&-1&-1&-1&-1&-1&-1&-1";
 			ImGui::PushItemWidth(300);
-			ImGui::InputText("##File Path", str0, IM_ARRAYSIZE(str0));
+			ImGui::InputText("##File Path", Input2, IM_ARRAYSIZE(Input2));
 			ImGui::PopItemWidth();
 
-			if (ImGui::Button("Import From File (Will Be Added $ASAP)"))
+			if (ImGui::Button("Import"))
 			{
-				/*
-				std::string text[1];
-				std::ifstream infile(str0);
+				std::string Input(Input2);
+				ReplaceStringInPlace(Input, "&", "\n");
+				std::istringstream Input3(Input);
 				std::string line;
-				int a = 0;
-				int b = 0;
-				bool prop = 0;
+				int k = 1; // Kaçıncı Satır
+				int b = 0; // Prop Değeri
+				int b2 = 0; //b2
+				int x = 0; // drawableId
+				bool prop = 1;
 				int old = 0;
-				for (int i = 0; i < 36; i++)
-				{
-					std::getline(infile, line);
-					if (a >= 11) {
-						if (prop) {
-							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b, old, stoi(line), 2);
+				while (std::getline(Input3, line)) {
+					if (k <= 24) { // 12 prop 12 texture
+						if (prop) { // Prop'u değişmek gerekiyorsa
+							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), b, stoi(line), 0, 2);
+							x = stoi(line);
 							prop = 0;
-							old = 0;
-							b++;
 						}
-						else {
-							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b, stoi(line), 0, 2);
-							old = stoi(line);
+						else { //Texture değişmek gerekiyorsa
+							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), b, x, stoi(line), 2);
+							b++;
 							prop = 1;
 						}
 					}
 					else {
 						if (prop) {
-							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), a, old, stoi(line), 2);
+							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b2, stoi(line), 0, 2);
+							x = stoi(line);
 							prop = 0;
-							old = 0;
-							a++;
 						}
 						else {
-							PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), a, stoi(line), 0, 2);
-							old = stoi(line);
+							PED::SET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), b2, x, stoi(line), 2);
+							b2++;
 							prop = 1;
 						}
 					}
-
+					k++;
+					std::this_thread::sleep_for(std::chrono::milliseconds(10));
 				}
-				*/
 			}
 
-			ImGui::SameLine();
-
-			if (ImGui::Button("Export To File (Will Be Added $ASAP)"))
+			if (ImGui::Button("Export To ClipBoard"))
 			{
-				/*
-				std::ofstream myfile(str0);
+				string gClip1;
+				stringstream gClip2;
 				for (int i = 0; i <= 11; i++)
 				{
-					myfile << PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), i) << "\n";
-					myfile << PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), i) << "\n";
+					gClip2 << "&";
+					gClip2 << PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), i);
+					gClip2 << "&";
+					gClip2 << PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), i);
 					if (i >= 11) {
-						for (int i = 0; i <= 7; i++)
+						for (int k = 0; k <= 7; k++)
 						{
-							myfile << PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), i) << "\n";
-							myfile << PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), i) << "\n";
+							gClip2 << "&";
+							gClip2 << PED::GET_PED_PROP_INDEX(PLAYER::PLAYER_PED_ID(), k);
+							gClip2 << "&";
+							gClip2 << PED::GET_PED_PROP_TEXTURE_INDEX(PLAYER::PLAYER_PED_ID(), k);
 						}
 					}
 				}
-				myfile.close();
-				*/
+				gClip2 >> gClip1;
+				gClip1.replace(0, 1, "");
+				big::toClipboard(GetDesktopWindow(), gClip1);
 			}
 
 			ImGui::EndTabItem();
@@ -1008,6 +1009,7 @@ namespace big
 			ImGui::Separator();
 			ImGui::EndTabItem();
 		}
+
 		if (ImGui::BeginTabItem("Unload"))
 		{
 			g_running = false;
