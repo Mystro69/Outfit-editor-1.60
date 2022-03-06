@@ -75,7 +75,7 @@ namespace big
 		TRY_CLAUSE
 		{
 			ImGui::SetNextWindowSize(ImVec2(454,816), ImGuiCond_FirstUseEver);
-			if (ImGui::Begin("Mystro Outfit Editor www.unknowncheats.me"))
+			if (ImGui::Begin("Outfit Editor By Mystro unknowncheats.me"))
 			{
 				ImGui::BeginTabBar("tabbar");
 				online_tab::render();
