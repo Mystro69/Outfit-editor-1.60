@@ -25,30 +25,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			try
 			{
 
-				LOG(RAW_GREEN_TO_CONSOLE) << u8R"kek(
-               ...
-             ;::::;
-           ;::::; :;
-         ;:::::'   :;
-        ;:::::;     ;.
-       ,:::::'       ;           OOO\
-       ::::::;       ;          OOOOO\
-       ;:::::;       ;         OOOOOOOO
-      ,;::::::;     ;'         / OOOOOOO
-    ;:::::::::`. ,,,;.        /  / DOOOOOO
-  .';:::::::::::::::::;,     /  /     DOOOO
- ,::::::;::::::;;;;::::;,   /  /        DOOO
-;`::::::`'::::::;;;::::: ,#/  /          DOOO
-:`:::::::`;::::::;;::: ;::#  /            DOOO
-::`:::::::`;:::::::: ;::::# /              DOO
-`:`:::::::`;:::::: ;::::::#/               DOO
- :::`:::::::`;; ;:::::::::##                OO
- ::::`:::::::`;::::::::;:::#                OO
- `:::::`::::::::::::;'`:;::#                O
-  `:::::`::::::::;' /  / `:#
-   ::::::`:::::;'  /  /   `#
-)kek";
-
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
