@@ -1,6 +1,6 @@
 i will add tatto editor and ped changer in new update
 
-# GTAV-Online-outfit-editor-internal-1.5.8
+# GTAV Online outfit editor internal 1.59
 [Uc Topic](https://www.unknowncheats.me/forum/grand-theft-auto-v/465334-outfit-editor-1-58-internal.html)
 
 # Create vector folder and download these resources
