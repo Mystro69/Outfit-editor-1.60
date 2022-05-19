@@ -1,4 +1,4 @@
-# GTAV outfit editor internal 1.59
+# GTAV outfit editor internal 1.60
 [Uc](https://www.unknowncheats.me/forum/grand-theft-auto-v/465334-outfit-editor-1-58-internal.html)
 
 # vector
