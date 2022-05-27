@@ -5,7 +5,7 @@
 
 namespace big
 {
-	class online_tab
+	class main_tab
 	{
 	public:
 		static void render();

@@ -7,6 +7,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
+#include "natives.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -47,8 +48,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
+				LOG(INFO) << "Press the insert key to open the menu";
+
 				while (g_running)
 				{
+					CAM::INVALIDATE_IDLE_CAM();
 					std::this_thread::sleep_for(500ms);
 				}
 

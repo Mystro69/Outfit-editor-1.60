@@ -7,7 +7,7 @@
 #include "features.hpp"
 #include "gui.hpp"
 #include "script_local.hpp"
-#include "online_tab.h"
+#include "main_tab.h"
 #include "script_global.hpp"
 #include "gta/VehicleValues.h"
 #include "misc/cpp/imgui_stdlib.h"
@@ -23,97 +23,45 @@ using namespace big;
 namespace big
 {
 
-	void online_tab::render()
+	void toClipboard(HWND hwnd, const std::string& s) {
+		OpenClipboard(hwnd);
+		EmptyClipboard();
+		HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, s.size() + 1);
+		if (!hg) {
+			CloseClipboard();
+			return;
+		}
+		memcpy(GlobalLock(hg), s.c_str(), s.size() + 1);
+		GlobalUnlock(hg);
+		SetClipboardData(CF_TEXT, hg);
+		CloseClipboard();
+		GlobalFree(hg);
+	}
+
+	void ReplaceStringInPlace(std::string& subject, const std::string& search,
+		const std::string& replace) {
+		size_t pos = 0;
+		while ((pos = subject.find(search, pos)) != std::string::npos) {
+			subject.replace(pos, search.length(), replace);
+			pos += replace.length();
+		}
+	}
+
+	void main_tab::render()
 	{
+
 		if (ImGui::BeginTabItem("Components"))
 		{
 
-			ImGui::Text("Face");
-			static int FaceValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
+			ImGui::Text("Top");
+			static int TopsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##bvalue", &FaceValue);
-			ImGui::PopItemWidth();
-			static int FaceText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##avalue", &FaceText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Mask");
-			static int MaskValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##cvalue", &MaskValue);
+			ImGui::InputInt("##12value", &TopsValue);
 			ImGui::PopItemWidth();
 			ImGui::SameLine();
-			static int MaskText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
+			static int TopsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##dvalue", &MaskText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Hair");
-			static int HairValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##evalue", &HairValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int HairText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##fvalue", &HairText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Torso");
-			static int TorsoValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##gvalue", &TorsoValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int TorsoText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##hvalue", &TorsoText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Leg");
-			static int LegValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##ivalue", &LegValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int LegText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##1value", &LegText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Parachute / Bag");
-			static int BagValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##2value", &BagValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int BagText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##3value", &BagText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Shoes");
-			static int ShoesValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##232value", &ShoesValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int ShoesText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##354value", &ShoesText);
-			ImGui::PopItemWidth();
-
-			ImGui::Text("Accessory");
-			static int AccessoryValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##4value", &AccessoryValue);
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			static int AccessoryText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
-			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##5value", &AccessoryText);
+			ImGui::InputInt("##13value", &TopsText);
 			ImGui::PopItemWidth();
 
 			ImGui::Text("Undershirt");
@@ -127,15 +75,59 @@ namespace big
 			ImGui::InputInt("##7value", &UndershirtText);
 			ImGui::PopItemWidth();
 
-			ImGui::Text("Armor");
-			static int ArmorValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			ImGui::Text("Legs");
+			static int LegValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##8value", &ArmorValue);
+			ImGui::InputInt("##ivalue", &LegValue);
 			ImGui::PopItemWidth();
 			ImGui::SameLine();
-			static int ArmorText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			static int LegText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##9value", &ArmorText);
+			ImGui::InputInt("##1value", &LegText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Feet");
+			static int ShoesValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##232value", &ShoesValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int ShoesText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 6);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##354value", &ShoesText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Accessories");
+			static int AccessoryValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##4value", &AccessoryValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int AccessoryText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 7);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##5value", &AccessoryText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Bags");
+			static int BagValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##2value", &BagValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int BagText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 5);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##3value", &BagText);
+			ImGui::PopItemWidth();
+
+			ImGui::Text("Gloves");
+			static int TorsoValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##gvalue", &TorsoValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int TorsoText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##hvalue", &TorsoText);
 			ImGui::PopItemWidth();
 
 			ImGui::Text("Decals");
@@ -149,24 +141,35 @@ namespace big
 			ImGui::InputInt("##11value", &DecalsText);
 			ImGui::PopItemWidth();
 
-			ImGui::Text("Tops");
-			static int TopsValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+			ImGui::Text("Mask");
+			static int MaskValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##12value", &TopsValue);
+			ImGui::InputInt("##cvalue", &MaskValue);
 			ImGui::PopItemWidth();
 			ImGui::SameLine();
-			static int TopsText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 11);
+			static int MaskText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
 			ImGui::PushItemWidth(200);
-			ImGui::InputInt("##13value", &TopsText);
+			ImGui::InputInt("##dvalue", &MaskText);
 			ImGui::PopItemWidth();
+
+			ImGui::Text("Armor");
+			static int ArmorValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##8value", &ArmorValue);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			static int ArmorText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 9);
+			ImGui::PushItemWidth(200);
+			ImGui::InputInt("##9value", &ArmorText);
+			ImGui::PopItemWidth();
+
+			ImGui::Separator();
 
 			if (ImGui::Button("Apply"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 0, FaceValue, FaceText, 2);
 					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 1, MaskValue, MaskText, 2);
-					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 2, HairValue, HairText, 2);
 					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 3, TorsoValue, TorsoText, 2);
 					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 4, LegValue, LegText, 2);
 					PED::SET_PED_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), 5, BagValue, BagText, 2);
@@ -183,12 +186,8 @@ namespace big
 
 			if (ImGui::Button("Update"))
 			{
-				FaceValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
-				FaceText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 0);
 				MaskValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
 				MaskText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 1);
-				HairValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
-				HairText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 2);
 				TorsoValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
 				TorsoText = PED::GET_PED_TEXTURE_VARIATION(PLAYER::PLAYER_PED_ID(), 3);
 				LegValue = PED::GET_PED_DRAWABLE_VARIATION(PLAYER::PLAYER_PED_ID(), 4);
@@ -269,6 +268,8 @@ namespace big
 			ImGui::InputInt("##32value", &BraceletText);
 			ImGui::PopItemWidth();
 
+			ImGui::Separator();
+
 			if (ImGui::Button("Apply"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
@@ -299,8 +300,7 @@ namespace big
 			ImGui::EndTabItem();
 		}
 
-
-		if (ImGui::BeginTabItem("Saved Outfits"))
+		if (ImGui::BeginTabItem("Saving"))
 		{
 			if (ImGui::CollapsingHeader("Saved FeMale Outfits"))
 			{
@@ -976,8 +976,8 @@ namespace big
 
 			if (ImGui::Button("Export To ClipBoard"))
 			{
-				string gClip1;
-				stringstream gClip2;
+				std::string gClip1;
+				std::stringstream gClip2;
 				for (int i = 0; i <= 11; i++)
 				{
 					gClip2 << "&";
@@ -999,14 +999,6 @@ namespace big
 				big::toClipboard(GetDesktopWindow(), gClip1);
 			}
 
-			ImGui::EndTabItem();
-		}
-
-		if (ImGui::BeginTabItem("Credits"))
-		{
-			ImGui::Text("Credits :");
-			ImGui::Text("Mystro (Dev)\npocakking (bigbasev2)\n1337Nexo (base)");
-			ImGui::Separator();
 			ImGui::EndTabItem();
 		}
 

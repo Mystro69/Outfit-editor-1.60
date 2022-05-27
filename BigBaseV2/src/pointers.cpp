@@ -9,7 +9,7 @@ namespace big
 	{
 		memory::pattern_batch main_batch;
 
-		main_batch.add("Game state", "48 85 C9 74 4B 83 3D", [this](memory::handle ptr)
+		main_batch.add("Game state", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr)
 		{
 			m_game_state = ptr.add(7).rip().as<eGameState*>();
 		});
@@ -66,12 +66,12 @@ namespace big
 			m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
 		});
 
-		main_batch.add("Increment Stat Event", "48 89 5c 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8b ec 48 83 ec ? 8b 79", [this](memory::handle ptr)
+		main_batch.add("Increment Stat Event", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
 		{
 			m_increment_stat_event = ptr.as<PVOID>();
 		});
 
-		main_batch.add("Is Dlc Present", "48 89 5c 24 ? 57 48 83 ec ? 81 f9", [this](memory::handle ptr)
+		main_batch.add("Is Dlc Present", "48 89 5C 24 ? 57 48 83 EC ? 81 F9", [this](memory::handle ptr)
 		{
 			m_is_dlc_present = ptr.as<PVOID>();
 		});
